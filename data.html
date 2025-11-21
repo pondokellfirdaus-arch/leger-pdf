@@ -68,68 +68,62 @@
 
   </div>
 
-  <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8ydCYVPf66qMnD5U8BPcdQCW5Hrm5cD0IAvitTdXmwBi_gihAxEeXM51vMmreiGw/exec";
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8ydCYVPf66qMnD5U8BPcdQCW5Hrm5cD0IAvitTdXmwBi_gihAxEeXM51vMmreiGw/exec";
 
-    async function loadKelas() {
-      const res = await fetch(SCRIPT_URL + "?action=getSheets");
-      const sheets = await res.json();
-      const dropdown = document.getElementById("kelasDropdown");
+  async function loadKelas() {
+    const res = await fetch(SCRIPT_URL + "?action=getSheets");
+    const sheets = await res.json();
+    const dropdown = document.getElementById("kelasDropdown");
 
-      dropdown.innerHTML = "";
+    dropdown.innerHTML = "";
 
-      sheets.forEach(name => {
+    sheets.forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      dropdown.appendChild(opt);
+    });
+
+    dropdown.addEventListener("change", loadData);
+    loadData();
+  }
+
+  async function loadData() {
+    const kelas = document.getElementById("kelasDropdown").value;
+    const res = await fetch(SCRIPT_URL + `?action=getData&sheet=${kelas}`);
+    const data = await res.json();
+    const tbody = document.getElementById("dataBody");
+    tbody.innerHTML = "";
+
+    const formalList = ["Salaf", "Wustha 1A", "Wustha 1B", "Wustha 1C", "Wustha 1D", "Wustha 2",
+                        "Ulya 1A", "Ulya 1B", "Ulya 2A", "Ulya 2B", "Ulya 2C"];
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+
+      const tdNama = document.createElement("td");
+      tdNama.textContent = row[0] || "";
+      tr.appendChild(tdNama);
+
+      const tdFormal = document.createElement("td");
+      const select = document.createElement("select");
+
+      // Isi opsi dropdown
+      formalList.forEach(f => {
         const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
-        dropdown.appendChild(opt);
+        opt.value = f;
+        opt.textContent = f;
+        if (row[1] === f) opt.selected = true;
+        select.appendChild(opt);
       });
 
-      dropdown.addEventListener("change", loadData);
-      loadData();
-    }
-
-    async function loadData() {
-      const kelas = document.getElementById("kelasDropdown").value;
-      const res = await fetch(SCRIPT_URL + `?action=getData&sheet=${kelas}`);
-      const data = await res.json();
-      const tbody = document.getElementById("dataBody");
-      tbody.innerHTML = "";
-
-      const formalList = ["Salaf", "Wustha 1A", "Wustha 1B", "Wustha 1C", "Wustha 1D", "Wustha 2", "Ulya 1A", "Ulya 1B", "Ulya 2A", "Ulya 2B", "Ulya 2C"];
-
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-
-        const tdNama = document.createElement("td");
-        tdNama.textContent = row[0] || "";
-        tr.appendChild(tdNama);
-
-        const tdFormal = document.createElement("td");
-        const select = document.createElement("select");
-        formalList.forEach(f => {
-          const opt = document.createElement("option");
-          opt.value = f;
-          opt.textContent = f;
-          if (row[1] === f) opt.selected = true;
-          select.appendChild(opt);
-        });
-        tdFormal.appendChild(select);
-        tr.appendChild(tdFormal);
-
-        tbody.appendChild(tr);
-      });
-    }
-
-    document.getElementById("saveBtn").addEventListener("click", saveData);
-
-    async function saveData() {
-      const kelas = document.getElementById("kelasDropdown").value;
-      const rows = document.querySelectorAll("#dataBody tr");
-
-      for (const tr of rows) {
-        const nama = tr.children[0].textContent;
-        const kelasFormal = tr.children[1].querySelector("select").value;
+      // ---------------------------
+      //  AUTO SAVE ketika dropdown diubah
+      // ---------------------------
+      select.addEventListener("change", async () => {
+        const nama = tdNama.textContent;
+        const kelasFormal = select.value;
 
         await fetch(SCRIPT_URL, {
           method: "POST",
@@ -141,13 +135,46 @@
             kelasFormal: kelasFormal
           })
         });
-      }
 
-      alert("Data berhasil disimpan!");
+        console.log("Auto saved:", nama, kelasFormal);
+      });
+      // ---------------------------
+
+      tdFormal.appendChild(select);
+      tr.appendChild(tdFormal);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Tombol simpan tetap ada (opsional)
+  document.getElementById("saveBtn").addEventListener("click", saveData);
+
+  async function saveData() {
+    const kelas = document.getElementById("kelasDropdown").value;
+    const rows = document.querySelectorAll("#dataBody tr");
+
+    for (const tr of rows) {
+      const nama = tr.children[0].textContent;
+      const kelasFormal = tr.children[1].querySelector("select").value;
+
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          action: "updateData",
+          sheet: kelas,
+          name: nama,
+          kelasFormal: kelasFormal
+        })
+      });
     }
 
-    loadKelas();
+    alert("Data berhasil disimpan!");
+  }
 
-  </script>
+  loadKelas();
+</script>
+  
 </body>
 </html>
