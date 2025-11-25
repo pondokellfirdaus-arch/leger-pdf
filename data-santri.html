@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Santri</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Semua style ambil dari style.css sebelumnya -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- HEADER SAMA DENGAN FILE SEBELUMNYA -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>PDF ELL FIRDAUS</h1>
+      </div>
+
+      <nav>
+        <ul id="nav-menu">
+          <li><a href="index.html"><i class="fas fa-home"></i> Beranda</a></li>
+          <li><a href="leger-diniyah.html"><i class="fas fa-chart-bar"></i> Leger Diniyah</a></li>
+          <li><a href="leger-formal.html"><i class="fas fa-chart-bar"></i> Leger Formal</a></li>
+          <li><a href="data-santri.html" class="active"><i class="fas fa-users"></i> Data Santri</a></li>
+          <li><a href="profil.html"><i class="fas fa-user-circle"></i> Profil</a></li>
+        </ul>
+
+        <div class="hamburger" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+    <h2 class="page-title">Data Santri Kelas Diniyah</h2>
+
+    <div class="box">
+
+      <div class="form-group">
+        <label><i class="fas fa-door-open"></i> Pilih Kelas</label>
+        <select id="kelasDropdown"></select>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Kelas Formal</th>
+          </tr>
+        </thead>
+        <tbody id="dataBody"></tbody>
+      </table>
+
+      <button id="saveBtn">
+        <i class="fas fa-save"></i> Simpan Perubahan
+      </button>
+
+    </div>
+  </div>
+
+  <!-- POPUP NOTIFIKASI -->
+  <div id="popup"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2023 Leger Nilai Online. All rights reserved.</p>
+  </footer>
+
+  <!-- JS TERPISAH -->
+  <script src="data-santri.js"></script>
+</body>
+</html>

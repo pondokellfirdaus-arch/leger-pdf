@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil | Leger Nilai Online</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>PDF ELL FIRDAUS</h1>
+      </div>
+
+      <nav>
+        <ul id="nav-menu">
+          <li><a href="index.html"><i class="fas fa-home"></i> Beranda</a></li>
+          <li><a href="leger-diniyah.html"><i class="fas fa-chart-bar"></i> Leger Diniyah</a></li>
+          <li><a href="leger-formal.html"><i class="fas fa-chart-bar"></i> Leger Formal</a></li>
+          <li><a href="data-santri.html"><i class="fas fa-users"></i> Data Santri</a></li>
+          <li><a href="profil.html" class="active"><i class="fas fa-user-circle"></i> Profil</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <section class="container">
+    <h2 class="page-title">Profil Pengguna</h2>
+
+    <div class="box" style="max-width:600px;">
+
+      <div style="text-align:center; margin-bottom:25px;">
+        <i class="fas fa-user-circle" style="font-size:90px; color:var(--primary);"></i>
+        <h3 style="margin-top:10px; font-size:1.5rem;">Nama Pengguna</h3>
+        <p style="color:var(--gray); margin-top:5px;">Guru / Administrator</p>
+      </div>
+
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" value="Nama Pengguna" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" value="email@example.com" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Role / Hak Akses</label>
+        <input type="text" value="Guru" readonly>
+      </div>
+
+      <button style="margin-top:20px;">
+        <i class="fas fa-key"></i> Ubah Password
+      </button>
+
+      <button style="background:var(--danger); margin-top:10px;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2023 Leger Nilai Online. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Menu responsive
+    document.getElementById('hamburger').addEventListener('click', function () {
+      document.getElementById('nav-menu').classList.toggle('show');
+    });
+  </script>
+
+</body>
+</html>
