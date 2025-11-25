@@ -1,171 +1,93 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aplikasi Data Kelas Diniyah</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f5f5f5;
-    }
-    header {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-    .container {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 600px;
-      margin: auto;
-    }
-    select {
-      padding: 8px;
-      width: 100%;
-      margin-bottom: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table, th, td {
-      border: 1px solid #ccc;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beranda | Leger Nilai Online</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header>Data Kelas Diniyah</header>
-  <div class="container">
-    <label>Pilih Kelas:</label>
-    <select id="kelasDropdown"></select>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Kelas Formal</th>
-        </tr>
-      </thead>
-      <tbody id="dataBody"></tbody>
-    </table>
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>PDF ELL FIRDAUS</h1>
+      </div>
 
-    <button id="saveBtn" style="margin-top:20px; padding:10px 20px; width:100%; font-size:16px;">Simpan Perubahan</button>
-  </div>
+      <nav>
+        <ul id="nav-menu">
+          <li><a href="index.html" class="active"><i class="fas fa-home"></i> Beranda</a></li>
+          <li><a href="leger-diniyah.html"><i class="fas fa-chart-bar"></i> Leger Diniyah</a></li>
+          <li><a href="leger-formal.html"><i class="fas fa-chart-bar"></i> Leger Formal</a></li>
+          <li><a href="data-santri.html"><i class="fas fa-users"></i> Data Santri</a></li>
+          <li><a href="#"><i class="fas fa-user-circle"></i> Profil</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="container" style="text-align:center; margin-top:40px;">
+    <h2 class="page-title">Selamat Datang</h2>
+    <p style="max-width:700px; margin:0 auto; font-size:1.1rem; color:#444;">
+      Sistem <b>Leger Nilai Online</b> membantu guru dalam menginput nilai, mengatur kelas,
+      dan mengelola data santri dengan cepat dan mudah.
+    </p>
+  </section>
+
+  <!-- MENU UTAMA -->
+  <section class="container" style="margin-top:40px;">
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:20px;">
+      
+      <a href="leger-diniyah.html" class="box" style="text-align:center; padding:30px; cursor:pointer;">
+        <i class="fas fa-book fa-3x" style="color:var(--primary);"></i>
+        <h3 style="margin-top:15px;">Leger Diniyah</h3>
+        <p>Input dan kelola nilai pelajaran diniyah.</p>
+      </a>
+
+      <a href="leger-formal.html" class="box" style="text-align:center; padding:30px; cursor:pointer;">
+        <i class="fas fa-chart-line fa-3x" style="color:var(--primary);"></i>
+        <h3 style="margin-top:15px;">Leger Formal</h3>
+        <p>Manage nilai pelajaran formal.</p>
+      </a>
+
+      <a href="data-santri.html" class="box" style="text-align:center; padding:30px; cursor:pointer;">
+        <i class="fas fa-users fa-3x" style="color:var(--primary);"></i>
+        <h3 style="margin-top:15px;">Data Santri</h3>
+        <p>Kelola data santri dan kelas formal.</p>
+      </a>
+
+      <a href="profil.html" class="box" style="text-align:center; padding:30px; cursor:pointer;">
+        <i class="fas fa-user-circle fa-3x" style="color:var(--primary);"></i>
+        <h3 style="margin-top:15px;">Profil</h3>
+        <p>Informasi akun dan pengaturan pengguna.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2023 Leger Nilai Online. All rights reserved.</p>
+  </footer>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8ydCYVPf66qMnD5U8BPcdQCW5Hrm5cD0IAvitTdXmwBi_gihAxEeXM51vMmreiGw/exec";
-
-    let originalData = []; // untuk menyimpan data awal
-
-    async function loadKelas() {
-      const res = await fetch(SCRIPT_URL + "?action=getSheets");
-      const sheets = await res.json();
-      const dropdown = document.getElementById("kelasDropdown");
-
-      sheets.forEach(name => {
-        const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
-        dropdown.appendChild(opt);
-      });
-
-      dropdown.addEventListener("change", loadData);
-      loadData();
-    }
-
-    async function loadData() {
-      const kelas = document.getElementById("kelasDropdown").value;
-      const res = await fetch(SCRIPT_URL + `?action=getData&sheet=${kelas}`);
-      const data = await res.json();
-
-      // simpan data awal sebagai pembanding
-      originalData = JSON.parse(JSON.stringify(data));
-
-      const tbody = document.getElementById("dataBody");
-      tbody.innerHTML = "";
-
-      const formalList = [
-        "Isi Kelas Formal", "Wustha 1A", "Wustha 1B", "Wustha 1C", "Wustha 1D",
-        "Wustha 2", "Ulya 1A", "Ulya 1B", "Ulya 2A", "Ulya 2B", "Ulya 2C"
-      ];
-
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-
-        const tdNama = document.createElement("td");
-        tdNama.textContent = row[0] || "";
-        tr.appendChild(tdNama);
-
-        const tdFormal = document.createElement("td");
-        const select = document.createElement("select");
-        formalList.forEach(f => {
-          const opt = document.createElement("option");
-          opt.value = f;
-          opt.textContent = f;
-          if (row[1] === f) opt.selected = true;
-          select.appendChild(opt);
-        });
-        tdFormal.appendChild(select);
-        tr.appendChild(tdFormal);
-
-        tbody.appendChild(tr);
-      });
-    }
-
-    document.getElementById("saveBtn").addEventListener("click", saveData);
-
-    async function saveData() {
-      const kelas = document.getElementById("kelasDropdown").value;
-      const rows = document.querySelectorAll("#dataBody tr");
-
-      const changedRows = [];
-
-      rows.forEach((tr, i) => {
-        const nama = tr.children[0].textContent;
-        const kelasFormal = tr.children[1].querySelector("select").value;
-
-        const originalFormal = originalData[i][1];
-
-        // kirim hanya jika berubah
-        if (kelasFormal !== originalFormal) {
-          changedRows.push([nama, kelasFormal]);
-        }
-      });
-
-      if (changedRows.length === 0) {
-        alert("Tidak ada perubahan.");
-        return;
-      }
-
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          action: "updateBulk",
-          sheet: kelas,
-          data: JSON.stringify(changedRows)
-        })
-      });
-
-      alert("Perubahan berhasil disimpan!");
-
-      // update data awal agar tidak dianggap berubah lagi
-      changedRows.forEach(cr => {
-        const idx = originalData.findIndex(r => r[0] === cr[0]);
-        if (idx !== -1) originalData[idx][1] = cr[1];
-      });
-    }
-
-    loadKelas();
+    // Menu responsive
+    document.getElementById('hamburger').addEventListener('click', function () {
+      document.getElementById('nav-menu').classList.toggle('show');
+    });
   </script>
+
 </body>
 </html>
